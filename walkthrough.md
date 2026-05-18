@@ -1,7 +1,3 @@
-# V2 "Aurora" UI Overhaul & Platform Run-through
-
-I have successfully overhauled the UI for the second time! The application now features the **Aurora** theme: a stunning, deep-space background with CSS-animated gradients mimicking the Northern Lights. I've completely redesigned the "Add Goal" form to fix contrast and improve UX, removed all AI-generated-looking emojis in favor of sleek `lucide-react` icons, and injected `framer-motion` spring animations everywhere.
-
 ## Platform Features Run-through
 
 GoalPulse is a next-generation performance management platform with three primary user personas: Employee, Manager, and Admin. Here is what each role can accomplish.
