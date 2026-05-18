@@ -22,7 +22,6 @@ export function CheckinCard({ goal, achievements, activeQuarter, onUpdate }: Pro
   const [error, setError] = useState('')
   const quarters: Quarter[] = ['Q1', 'Q2', 'Q3', 'Q4']
 
-  // Auto-set the initial selected quarter to the active quarter if one is open
   useEffect(() => {
     if (activeQuarter) {
       setSelectedQuarter(activeQuarter)
@@ -56,7 +55,6 @@ export function CheckinCard({ goal, achievements, activeQuarter, onUpdate }: Pro
     return { q, ach, score: ach ? computeScore(goal, ach) : null }
   })
 
-  // Prefill values for the selected quarter
   function startEditing(q: Quarter) {
     const ach = getAch(q)
     if (goal.uom_type === 'timeline') {
@@ -95,8 +93,8 @@ export function CheckinCard({ goal, achievements, activeQuarter, onUpdate }: Pro
               }
             }}
             className={`text-xs px-4 py-2 rounded-xl border font-medium transition-all ml-4 flex items-center gap-2 backdrop-blur-md select-none ${
-              editing 
-                ? 'bg-slate-800/50 border-slate-600/50 text-slate-300 hover:bg-slate-700' 
+              editing
+                ? 'bg-slate-800/50 border-slate-600/50 text-slate-300 hover:bg-slate-700'
                 : 'bg-indigo-600/20 border-indigo-500/30 text-indigo-300 hover:bg-indigo-600/40 hover:text-white'
             }`}
           >
@@ -109,14 +107,14 @@ export function CheckinCard({ goal, achievements, activeQuarter, onUpdate }: Pro
             const isSelected = q === selectedQuarter
             const isActive = q === activeQuarter
             return (
-              <div 
-                key={q} 
+              <div
+                key={q}
                 onClick={() => startEditing(q)}
                 className={`px-4 py-5 text-center cursor-pointer hover:bg-white/5 transition-all relative group/column select-none ${
-                  isSelected 
-                    ? 'bg-indigo-500/10 border-t-2 border-t-indigo-500' 
-                    : isActive 
-                    ? 'bg-indigo-500/5' 
+                  isSelected
+                    ? 'bg-indigo-500/10 border-t-2 border-t-indigo-500'
+                    : isActive
+                    ? 'bg-indigo-500/5'
                     : 'bg-transparent'
                 }`}
               >
@@ -141,8 +139,7 @@ export function CheckinCard({ goal, achievements, activeQuarter, onUpdate }: Pro
                 ) : (
                   <p className="text-slate-700 text-2xl font-bold pointer-events-none select-none">—</p>
                 )}
-                
-                {/* Micro hover edit pencil */}
+
                 <div className="absolute top-2 right-2 opacity-0 group-hover/column:opacity-100 transition-opacity duration-200 pointer-events-none">
                   <Edit3 size={10} className="text-slate-400" />
                 </div>
@@ -151,52 +148,68 @@ export function CheckinCard({ goal, achievements, activeQuarter, onUpdate }: Pro
           })}
         </div>
 
-        <AnimatePresence>
-          {editing && (
-            <motion.div 
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="border-t border-white/10 bg-slate-950/40 px-6 py-5 space-y-4 overflow-hidden"
-            >
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-indigo-300 flex items-center gap-2">
-                  <Edit3 size={16} /> Record {selectedQuarter} Achievement
-                </p>
-              </div>
-
-              {goal.uom_type === 'timeline' ? (
-                <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-slate-400">Actual Completion Date</label>
-                  <input type="date" value={actualDate} onChange={e => setActualDate(e.target.value)}
-                    className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all animate-none select-text" />
+        {/* FIX: overflow-hidden moved to this static wrapper div, NOT on the motion.div */}
+        <div className="overflow-hidden">
+          <AnimatePresence>
+            {editing && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="border-t border-white/10 bg-slate-950/40 px-6 py-5 space-y-4"
+                onClick={e => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold text-indigo-300 flex items-center gap-2">
+                    <Edit3 size={16} /> Record {selectedQuarter} Achievement
+                  </p>
                 </div>
-              ) : (
-                <div className="space-y-1.5">
-                  <label className="text-xs uppercase tracking-wider font-semibold text-slate-400">
-                    {goal.uom_type === 'zero' ? 'Incidents (0 = 100 score)' : `Actual (Target: ${Number(goal.target_value || 0).toLocaleString()})`}
-                  </label>
-                  <input type="number" value={actualValue} onChange={e => setActualValue(e.target.value)}
-                    placeholder="Enter actual value..." 
-                    className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all select-text" />
-                </div>
-              )}
 
-              {error && (
-                <p className="text-rose-400 text-xs bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-lg">{error}</p>
-              )}
-
-              <button onClick={handleSave} disabled={saving || (!actualValue && !actualDate)}
-                className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl py-3 text-sm font-bold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 disabled:opacity-50 transition-all flex justify-center items-center gap-2">
-                {saving ? (
-                  <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Saving...</>
+                {goal.uom_type === 'timeline' ? (
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-wider font-semibold text-slate-400">Actual Completion Date</label>
+                    <input
+                      type="date"
+                      value={actualDate}
+                      onChange={e => setActualDate(e.target.value)}
+                      className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all select-text"
+                    />
+                  </div>
                 ) : (
-                  <><Save size={16} /> Save Achievement</>
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-wider font-semibold text-slate-400">
+                      {goal.uom_type === 'zero' ? 'Incidents (0 = 100 score)' : `Actual (Target: ${Number(goal.target_value || 0).toLocaleString()})`}
+                    </label>
+                    <input
+                      type="number"
+                      value={actualValue}
+                      onChange={e => setActualValue(e.target.value)}
+                      placeholder="Enter actual value..."
+                      className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all select-text"
+                    />
+                  </div>
                 )}
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+
+                {error && (
+                  <p className="text-rose-400 text-xs bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-lg">{error}</p>
+                )}
+
+                <button
+                  onClick={handleSave}
+                  disabled={saving || (!actualValue && !actualDate)}
+                  className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl py-3 text-sm font-bold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 disabled:opacity-50 transition-all flex justify-center items-center gap-2"
+                >
+                  {saving ? (
+                    <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Saving...</>
+                  ) : (
+                    <><Save size={16} /> Save Achievement</>
+                  )}
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
       </CardContent>
     </Card>
   )

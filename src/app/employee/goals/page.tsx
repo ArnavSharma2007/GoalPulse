@@ -96,7 +96,7 @@ export default function EmployeeGoalsPage() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
   }
 
   return (
@@ -130,9 +130,9 @@ export default function EmployeeGoalsPage() {
       <AnimatePresence>
         {submitErrors.length > 0 && (
           <motion.div 
-            initial={{ opacity: 0, height: 0, mb: 0 }}
-            animate={{ opacity: 1, height: 'auto', mb: 24 }}
-            exit={{ opacity: 0, height: 0, mb: 0 }}
+            initial={{ opacity: 0, height: 0}}
+            animate={{ opacity: 1, height: 'auto'}}
+            exit={{ opacity: 0, height: 0}}
             className="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 overflow-hidden"
           >
             {submitErrors.map((e, i) => (

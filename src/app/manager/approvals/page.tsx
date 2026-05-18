@@ -80,7 +80,7 @@ export default function ApprovalsPage() {
               layout
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, height: 0, mb: 0 }}
+              exit={{ opacity: 0, height: 0}}
               onClick={async () => { setSelected(sheet); await loadGoals(sheet.id) }}
               className={`glass-card rounded-2xl cursor-pointer overflow-hidden transition-all duration-300 ${
                 selected?.id === sheet.id ? 'ring-2 ring-indigo-500 shadow-[0_0_30px_rgba(99,102,241,0.2)]' : 'hover:bg-white/10'
