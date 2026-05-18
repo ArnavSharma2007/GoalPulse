@@ -46,5 +46,5 @@ GoalPulse is a next-generation performance management platform with three primar
 3. **Cycles & Configuration:**
    - Configure the active performance year (e.g., FY 2024-25) and manually open/close Check-in windows (Q1, Q2, etc.) to enforce strict timelines.
 
-> [!TIP]
-> The UI updates are live. Your `pnpm dev` server is still running. Head over to your browser and check out the new Aurora background and the redesigned Add Goal screen!
+> [!PS]
+> The AI Model was trained on artificial data since online data wasn't according to the requirements. It has been trained on around 50,000 parameters, with a MAPE of around 2.5 to 3%
