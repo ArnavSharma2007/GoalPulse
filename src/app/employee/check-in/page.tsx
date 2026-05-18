@@ -84,7 +84,7 @@ export default function CheckinPage() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
   }
 
   if (!goals.length) return (
@@ -192,8 +192,8 @@ export default function CheckinPage() {
             {prediction && !prediction.error && !predicting && (
               <motion.div 
                 initial={{ opacity: 0, y: 20, height: 0 }}
-                animate={{ opacity: 1, y: 0, height: 'auto', mt: 32 }}
-                className="grid grid-cols-3 gap-6"
+                animate={{ opacity: 1, y: 0, height: 'auto'}}
+                className="grid grid-cols-3 gap-6 mt-8"
               >
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm">
                   <p className="text-[10px] uppercase tracking-wider text-indigo-300 font-semibold mb-2">Projected Score</p>

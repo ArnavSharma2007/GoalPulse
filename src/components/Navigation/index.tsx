@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { LayoutDashboard, Target, CheckSquare, BarChart, Settings, LogOut, Users, ShieldAlert, History } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const NAV_ITEMS = {
   employee: [
@@ -46,7 +47,14 @@ export function Navigation({ role, userName }: { role: 'employee'|'manager'|'adm
     >
       <div className="p-6 pb-2">
         <div className="mb-8">
-          <img src="/logo.png" alt="GoalPulse" className="h-8 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
+          <Image
+            src="/logo.png"
+            alt="GoalPulse"
+            width={120}
+            height={32}
+            priority
+            className="h-8 w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+          />
           <p className="text-[10px] uppercase tracking-wider text-indigo-300 font-semibold mt-2">{role} Portal</p>
         </div>
       </div>
